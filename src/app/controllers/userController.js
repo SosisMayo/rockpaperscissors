@@ -8,10 +8,6 @@ const userSchema = Joi.object({
 
 const createUser = async (req, res) => {
   try {
-    const { error } = userSchema.validate(req.body);
-    if (error)
-      return res.status(400).json({ message: error.details[0].message });
-
     const result = await createUserUseCase.create(req.body);
     return res.status(201).json(result);
   } catch (err) {

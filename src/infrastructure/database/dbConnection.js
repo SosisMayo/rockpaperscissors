@@ -1,10 +1,31 @@
-// src/infrastructure/database/dbConnection.js
 const { Sequelize } = require("sequelize");
-const config = require("../../config/dbConfig");
+const dbConfig = require("../../config/dbConfig");
 
-const sequelize = new Sequelize(config.databaseUrl, {
-  dialect: "postgres",
-  logging: false,
-});
+const env = process.env.NODE_ENV || "development";
+const config = dbConfig.development;
 
-module.exports = sequelize;
+// Initialize Sequelize
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: "localhost",
+    dialect: "postgres",
+  }
+);
+
+// Function to test the connection
+const testDBConnection = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log(
+      `✅ Database connected successfully to ${config.database} on ${config.host}`
+    );
+  } catch (error) {
+    console.error("❌ Unable to connect to the database:", error.message);
+    process.exit(1);
+  }
+};
+
+module.exports = { sequelize, testDBConnection };
