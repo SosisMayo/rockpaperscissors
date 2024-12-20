@@ -8,37 +8,12 @@ const { validate } = require("../../../infrastructure/middlewares/validate");
 
 const router = express.Router();
 
-router.post(
-  "/",
-  validate(userValidation.createUserSchema),
-  userController.createUser
-);
-
-// // Only users with 'readProfile' permission can access this route
-// router.get(
-//   "/",
-//   authenticateJWT,
-//   authorize(["readProfile"]),
-//   validate(userValidation.getProfileSchema),
-//   userController.getProfile
-// );
-
-// // Only users with 'updateProfile' permission can access this route
-// router.put(
-//   "/",
-//   authenticateJWT,
-//   authorize(["updateProfile"]),
-//   validate(userValidation.updateProfileSchema),
-//   userController.updateProfile
-// );
-
-// // Only admin or moderator can delete a user
-// router.delete(
-//   "/:id",
-//   authenticateJWT,
-//   authorize(["deleteUser"]),
-//   validate(userValidation.deleteUserSchema),
-//   userController.deleteUser
-// );
+router
+  .route("/")
+  .post(
+    validate(userValidation.createUserValidation),
+    userController.createUser
+  )
+  .get(authenticateJWT, authorize(["readProfile"]), userController.getAllUsers);
 
 module.exports = router;

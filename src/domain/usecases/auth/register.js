@@ -1,9 +1,10 @@
 // src/domain/usecases/user/createUser.js
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const User = require("../../entities/User");
 const userRepository = require("../../../infrastructure/repositories/userRepositoryImpl");
 
-const create = async (userData) => {
+const register = async (userData) => {
   // Cek Username
   const existingUser = await userRepository.findByUsername(userData.username);
   if (existingUser) throw new Error("Username already in use");
@@ -42,7 +43,25 @@ const create = async (userData) => {
   // Create User
   const createdUser = await userRepository.create(newUser);
 
-  return { user: createdUser };
+  // Generate JWT
+  const accessToken = jwt.sign(
+    { userId: createdUser.id, role: createdUser.role },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.ACCESS_TOKEN_LIFETIME,
+    }
+  );
+
+  // Generate JWT Refresh Token
+  const refreshToken = jwt.sign(
+    { userId: createdUser.id, role: createdUser.role },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.REFRESH_TOKEN_LIFETIME,
+    }
+  );
+
+  return { user: createdUser, accessToken, refreshToken };
 };
 
-module.exports = { create };
+module.exports = { register };

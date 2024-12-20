@@ -7,10 +7,14 @@ const UserModel = sequelize.define("User", {
     primaryKey: true,
     autoIncrement: true,
   },
-  full_name: {
+  username: {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
+  },
+  full_name: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   email: {
     type: DataTypes.STRING,
