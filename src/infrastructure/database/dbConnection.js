@@ -5,19 +5,20 @@ const env = process.env.NODE_ENV || "development";
 const config = dbConfig.development;
 
 // Initialize Sequelize
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: "localhost",
-    dialect: "postgres",
-  }
-);
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: "postgres",
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
+});
 
 // Function to test the connection
 const testDBConnection = async () => {
   try {
+    console.log(process.env.DATABASE_URL);
     await sequelize.authenticate();
     console.log(
       `✅ Database connected successfully to ${config.database} on ${config.host}`
