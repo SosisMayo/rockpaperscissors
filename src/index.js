@@ -13,6 +13,11 @@ const authRoutesV1 = require("./app/routes/v1/authRoutes");
 app.use(bodyParser.json());
 
 // Use versioned routes
+app.get("/", (req, res) => {
+  res.status(200).json({
+    message: "Your API is Running Successfully",
+  });
+});
 app.use("/api/v1/users", userRoutesV1);
 app.use("/api/v1/auth", authRoutesV1); // API versioning for user routes
 
