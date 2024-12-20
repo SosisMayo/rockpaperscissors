@@ -8,11 +8,16 @@ class UserRepositoryImpl extends UserRepository {
       username: user.username,
       email: user.email,
       password: user.password,
-      account_number: user.account_number,
-      balance: user.balance,
-      phone_number: user.phone_number,
       avatar_url: user.avatar_url,
       role: user.role,
+      total_match: user.total_match,
+      total_win: user.total_win,
+      total_lose: user.total_lose,
+      total_draw: user.total_draw,
+      win_streak: user.win_streak,
+      lose_streak: user.lose_streak,
+      last_match: user.last_match,
+      point: user.point,
     });
     return createdUser;
   }
@@ -25,10 +30,8 @@ class UserRepositoryImpl extends UserRepository {
     return await UserModel.findOne({ where: { username } });
   }
 
-  async findByAccountNumber(accountNumber) {
-    return await UserModel.findOne({
-      where: { account_number: accountNumber },
-    });
+  async findByEmail(email) {
+    return await UserModel.findOne({ where: { email } });
   }
 
   async findAll() {

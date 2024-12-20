@@ -5,21 +5,8 @@ const User = require("../../entities/User");
 const userRepository = require("../../../infrastructure/repositories/userRepositoryImpl");
 
 const register = async (userData) => {
-  // Cek Username
-  const existingUser = await userRepository.findByUsername(userData.username);
-  if (existingUser) throw new Error("Username already in use");
-
   // Hashing Password
   const hashedPassword = await bcrypt.hash(userData.password, 10);
-  let existingAccount;
-
-  // Bikin Account Number
-  do {
-    userData.account_number = Math.random() * 1000000000;
-    existingAccount = await userRepository.findByAccountNumber(
-      userData.account_number.toString()
-    );
-  } while (existingAccount);
 
   // Asign Avatar URL Default Ketika Gak Diinput
   if (!userData.avatar_url) {
@@ -29,13 +16,9 @@ const register = async (userData) => {
 
   const newUser = new User(
     null,
-    userData.full_name,
     userData.username,
     userData.email,
     hashedPassword,
-    userData.account_number,
-    0,
-    userData.phone_number,
     userData.avatar_url,
     userData.role
   );

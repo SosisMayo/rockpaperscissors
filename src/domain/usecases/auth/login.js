@@ -1,5 +1,13 @@
-const login = async (username, password) => {
-  const user = await UserModel.findOne({ where: { username } });
+const bcrypt = require("bcryptjs");
+const userRepository = require("../../../infrastructure/repositories/userRepositoryImpl");
+
+const login = async (loginData) => {
+  let user;
+  if (loginData.username) {
+    user = await userRepository.findByUsername(loginData.username);
+  } else if (loginData.email) {
+    user = await userRepository.findByEmail(loginData.email);
+  }
   if (!user) {
     throw new Error("User not found");
   }
@@ -28,4 +36,4 @@ const login = async (username, password) => {
   return { user, accessToken, refreshToken };
 };
 
-module.exports = login;
+module.exports = { login };

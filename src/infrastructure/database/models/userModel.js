@@ -10,34 +10,22 @@ const UserModel = sequelize.define("User", {
   username: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
-  },
-  full_name: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    unique: {
+      args: true,
+      msg: "Username already exists",
+    },
   },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    unique: {
+      args: true,
+      msg: "Email already exists",
+    },
   },
   password: {
     type: DataTypes.STRING,
     allowNull: false,
-  },
-  account_number: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
-  balance: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 0,
-  },
-  phone_number: {
-    type: DataTypes.STRING,
-    unique: true,
   },
   avatar_url: {
     type: DataTypes.STRING,
@@ -47,6 +35,46 @@ const UserModel = sequelize.define("User", {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: "user", // Default to 'user' role
+  },
+  total_match: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
+  total_win: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
+  total_lose: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
+  total_draw: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
+  win_streak: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
+  lose_streak: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
+  last_match: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
+  point: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
   },
 });
 

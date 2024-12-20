@@ -3,6 +3,7 @@ const registerUseCase = require("../../domain/usecases/auth/register");
 
 const login = async (req, res) => {
   try {
+    console.log(req.body);
     const { user, accessToken, refreshToken } = await loginUseCase.login(
       req.body
     );
