@@ -21,17 +21,8 @@ const getProfileValidation = {
   }),
 };
 
-// Validation for updating an existing user (body)
-const updateUserValidation = {
-  body: Joi.object({
-    username: Joi.string().min(3).max(30),
-    email: Joi.string().email(),
-    password: Joi.string().min(6),
-  }),
-};
-
 // Validation for finding a user by ID (params)
-const findUserByIdValidation = {
+const getUserById = {
   params: Joi.object({
     id: Joi.string().required(),
   }),
@@ -45,10 +36,25 @@ const queryUsersValidation = {
   }),
 };
 
+const updateUserByIdValidation = {
+  params: Joi.object({
+    id: Joi.string().required(),
+  }),
+  body: Joi.object({
+    username: Joi.string().min(3).max(30),
+    full_name: Joi.string().min(5),
+    email: Joi.string().email(),
+    password: Joi.string().min(6),
+    phone_number: Joi.string().min(11).max(14),
+    avatar_url: Joi.string(),
+    role: Joi.string().valid("user", "admin"),
+  }),
+};
+
 module.exports = {
   createUserValidation,
   getProfileValidation,
-  updateUserValidation,
-  findUserByIdValidation,
+  getUserById,
   queryUsersValidation,
+  updateUserByIdValidation,
 };

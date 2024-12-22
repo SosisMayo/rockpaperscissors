@@ -37,6 +37,17 @@ class UserRepositoryImpl extends UserRepository {
   async findAll() {
     return await UserModel.findAll();
   }
+
+  async updateUserById(id, updatedData) {
+    await UserModel.update(updatedData, { where: { id } });
+    const updatedUser = await UserModel.findByPk(id);
+    const { password, ...userWithoutPassword } = updatedUser.dataValues;
+    return userWithoutPassword;
+  }
+
+  async deleteUserById(id) {
+    await UserModel.destroy({ where: { id } });
+  }
 }
 
 module.exports = new UserRepositoryImpl();

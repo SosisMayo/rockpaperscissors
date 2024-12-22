@@ -10,6 +10,22 @@ class UserRepository {
   findByUsername(username) {
     throw new Error("Method not implemented");
   }
+
+  findByEmail(email) {
+    throw new Error("Method not implemented");
+  }
+
+  findAll() {
+    throw new Error("Method not implemented");
+  }
+
+  updateUserById(id, updatedData) {
+    throw new Error("Method not implemented");
+  }
+
+  deleteUserById(id) {
+    throw new Error("Method not implemented");
+  }
 }
 
 module.exports = UserRepository;

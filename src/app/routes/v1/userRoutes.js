@@ -16,4 +16,25 @@ router
   )
   .get(authenticateJWT, authorize(["readProfile"]), userController.getAllUsers);
 
+router
+  .route("/:id")
+  .get(
+    authenticateJWT,
+    authorize(["readProfile"]),
+    validate(userValidation.getUserById),
+    userController.getUserById
+  )
+  .patch(
+    authenticateJWT,
+    authorize(["updateProfile"]),
+    validate(userValidation.updateUserByIdValidation),
+    userController.updateUser
+  )
+  .delete(
+    authenticateJWT,
+    authorize(["deleteUser"]),
+    validate(userValidation.getUserById),
+    userController.deleteUser
+  );
+
 module.exports = router;
