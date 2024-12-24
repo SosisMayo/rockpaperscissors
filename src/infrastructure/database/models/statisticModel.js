@@ -2,17 +2,13 @@ const { DataTypes } = require("sequelize");
 const { sequelize } = require("../dbConnection");
 const UserModel = require("./userModel");
 
-const MatchHistoryModel = sequelize.define("MatchHistory", {
+const StatisticModel = sequelize.define("Statistic", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  room_id: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-  },
-  player1: {
+  user_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -20,29 +16,33 @@ const MatchHistoryModel = sequelize.define("MatchHistory", {
       key: "id",
     },
     onUpdate: "CASCADE",
-    onDelete: "SET NULL",
+    onDelete: "CASCADE",
   },
-  player2: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    references: {
-      model: UserModel,
-      key: "id",
-    },
-    onUpdate: "CASCADE",
-    onDelete: "SET NULL",
-  },
-  winner: {
+  win: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    defaultValue: 0,
   },
-  score_player1: {
+  lose: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    defaultValue: 0,
   },
-  score_player2: {
+  draw: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    defaultValue: 0,
+  },
+  win_streak: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
+  point: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
   },
 });
-module.exports = MatchHistoryModel;
+
+module.exports = StatisticModel;

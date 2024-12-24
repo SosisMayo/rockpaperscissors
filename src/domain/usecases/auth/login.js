@@ -28,7 +28,6 @@ const login = async (loginData) => {
     }
   );
 
-  // Generate JWT Refresh Token
   const refreshToken = jwt.sign(
     { userId: user.id, role: user.role },
     process.env.JWT_SECRET,

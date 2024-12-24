@@ -1,14 +1,12 @@
-// src/domain/usecases/user/createUser.js
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../../entities/User");
 const userRepository = require("../../../infrastructure/repositories/userRepositoryImpl");
+const statisticRepository = require("../../../infrastructure/repositories/statisticRepositoryImpl");
 
 const register = async (userData) => {
-  // Hashing Password
   const hashedPassword = await bcrypt.hash(userData.password, 10);
 
-  // Asign Avatar URL Default Ketika Gak Diinput
   if (!userData.avatar_url) {
     userData.avatar_url =
       "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg";
@@ -23,10 +21,17 @@ const register = async (userData) => {
     userData.role
   );
 
-  // Create User
   const createdUser = await userRepository.create(newUser);
 
-  // Generate JWT
+  await statisticRepository.create({
+    user_id: createdUser.dataValues.id,
+    win: 0,
+    lose: 0,
+    draw: 0,
+    point: 0,
+    win_streak: 0,
+  });
+
   const accessToken = jwt.sign(
     { userId: createdUser.id, role: createdUser.role },
     process.env.JWT_SECRET,
@@ -35,7 +40,6 @@ const register = async (userData) => {
     }
   );
 
-  // Generate JWT Refresh Token
   const refreshToken = jwt.sign(
     { userId: createdUser.id, role: createdUser.role },
     process.env.JWT_SECRET,

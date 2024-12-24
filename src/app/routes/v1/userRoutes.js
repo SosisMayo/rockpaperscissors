@@ -1,4 +1,3 @@
-// src/app/routes/userRoutes.js
 const express = require("express");
 const userController = require("../../controllers/userController");
 const authenticateJWT = require("../../../infrastructure/middlewares/authMiddleware");

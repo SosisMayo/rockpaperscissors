@@ -10,14 +10,6 @@ class UserRepositoryImpl extends UserRepository {
       password: user.password,
       avatar_url: user.avatar_url,
       role: user.role,
-      total_match: user.total_match,
-      total_win: user.total_win,
-      total_lose: user.total_lose,
-      total_draw: user.total_draw,
-      win_streak: user.win_streak,
-      lose_streak: user.lose_streak,
-      last_match: user.last_match,
-      point: user.point,
     });
     return createdUser;
   }
