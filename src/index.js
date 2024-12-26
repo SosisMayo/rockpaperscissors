@@ -1,6 +1,7 @@
 // TODO : Add Socket Server
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const bodyParser = require("body-parser");
 const { createServer } = require("http");
@@ -17,6 +18,7 @@ const userRoutesV1 = require("./app/routes/v1/userRoutes");
 const authRoutesV1 = require("./app/routes/v1/authRoutes");
 const statisticRoutesV1 = require("./app/routes/v1/statisticRoutes");
 
+app.use(cors());
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
