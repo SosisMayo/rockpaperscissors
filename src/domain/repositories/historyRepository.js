@@ -1,9 +1,9 @@
-class MatchHistoryRepository {
+class HistoryRepository {
   async getAllMatchHistory() {
     throw new Error("Method not implemented");
   }
 
-  async getMatchHistoryById(id) {
+  async getMatchHistoryByUserId(id) {
     throw new Error("Method not implemented");
   }
 

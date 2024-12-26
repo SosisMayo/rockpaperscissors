@@ -1,4 +1,4 @@
-class MatchHistory {
+class History {
   constructor(
     id,
     room_id,
@@ -18,3 +18,5 @@ class MatchHistory {
     this.score_player2 = score_player2;
   }
 }
+
+module.exports = History;

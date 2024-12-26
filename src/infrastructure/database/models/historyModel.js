@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const { sequelize } = require("../dbConnection");
 const UserModel = require("./userModel");
 
-const MatchHistoryModel = sequelize.define("MatchHistory", {
+const HistoryModel = sequelize.define("MatchHistory", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -45,4 +45,5 @@ const MatchHistoryModel = sequelize.define("MatchHistory", {
     allowNull: false,
   },
 });
-module.exports = MatchHistoryModel;
+
+module.exports = HistoryModel;
