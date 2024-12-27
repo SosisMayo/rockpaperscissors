@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const userRepository = require("../../../infrastructure/repositories/userRepositoryImpl");
+const environment = require("../../../config/environment");
 
 const login = async (loginData) => {
   let user;
@@ -22,17 +23,17 @@ const login = async (loginData) => {
 
   const accessToken = jwt.sign(
     { userId: user.id, role: user.role },
-    process.env.JWT_SECRET,
+    environment.JWT_SECRET,
     {
-      expiresIn: process.env.ACCESS_TOKEN_LIFETIME,
+      expiresIn: environment.ACCESS_TOKEN_LIFETIME,
     }
   );
 
   const refreshToken = jwt.sign(
     { userId: user.id, role: user.role },
-    process.env.JWT_SECRET,
+    environment.JWT_SECRET,
     {
-      expiresIn: process.env.REFRESH_TOKEN_LIFETIME,
+      expiresIn: environment.REFRESH_TOKEN_LIFETIME,
     }
   );
 

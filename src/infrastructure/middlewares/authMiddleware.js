@@ -1,3 +1,4 @@
+const env = require("../../config/environment");
 const jwt = require("jsonwebtoken");
 
 const authenticateJWT = (req, res, next) => {
@@ -8,7 +9,7 @@ const authenticateJWT = (req, res, next) => {
       message: "Invalid Token",
     });
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+  jwt.verify(token, env.JWT_SECRET, (err, user) => {
     if (err)
       return res.status(401).json({
         success: false,

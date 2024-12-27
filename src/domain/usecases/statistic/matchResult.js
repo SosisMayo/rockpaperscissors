@@ -9,7 +9,6 @@ const matchResult = async (userId, matchResult) => {
   if (matchResult === "win") {
     updatedData.win = userStatistic.win + 1;
     updatedData.win_streak = userStatistic.win_streak + 1;
-    // FIXME Point Calculation Fixation
     updatedData.point = userStatistic.point + 3 + userStatistic.win_streak * 3;
   } else if (matchResult === "lose") {
     updatedData.lose = userStatistic.lose + 1;

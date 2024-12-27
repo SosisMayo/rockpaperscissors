@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../../entities/User");
 const userRepository = require("../../../infrastructure/repositories/userRepositoryImpl");
 const statisticRepository = require("../../../infrastructure/repositories/statisticRepositoryImpl");
+const environment = require("../../../config/environment");
 
 const register = async (userData) => {
   const hashedPassword = await bcrypt.hash(userData.password, 10);
@@ -34,17 +35,17 @@ const register = async (userData) => {
 
   const accessToken = jwt.sign(
     { userId: createdUser.id, role: createdUser.role },
-    process.env.JWT_SECRET,
+    environment.JWT_SECRET,
     {
-      expiresIn: process.env.ACCESS_TOKEN_LIFETIME,
+      expiresIn: environment.ACCESS_TOKEN_LIFETIME,
     }
   );
 
   const refreshToken = jwt.sign(
     { userId: createdUser.id, role: createdUser.role },
-    process.env.JWT_SECRET,
+    environment.JWT_SECRET,
     {
-      expiresIn: process.env.REFRESH_TOKEN_LIFETIME,
+      expiresIn: environment.REFRESH_TOKEN_LIFETIME,
     }
   );
 

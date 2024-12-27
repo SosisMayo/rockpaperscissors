@@ -1,4 +1,3 @@
-// TODO : Add Socket Server
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -6,6 +5,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
+const env = require("./config/environment");
 
 const httpServer = createServer(app);
 
@@ -21,24 +21,22 @@ const statisticRoutesV1 = require("./app/routes/v1/statisticRoutes");
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get("/", (req, res) => {
+app.get("/api/v1/health", (req, res) => {
   res.status(200).json({
     message: "Your API is Running Successfully",
   });
 });
 app.use("/api/v1/users", userRoutesV1);
 app.use("/api/v1/auth", authRoutesV1);
-app.use("/api/v1/statistic", statisticRoutesV1);
+app.use("/api/v1/statistics", statisticRoutesV1);
 
 const startServer = async () => {
-  const PORT = process.env.PORT || 3000;
-
   const rooms = {};
 
   try {
     await testDBConnection();
     await sequelize.sync({ alter: true });
-    console.log("✅ All models synchronized with the database!");
+    console.log("All models synchronized with the database!");
 
     const io = new Server(httpServer, {
       cors: {
@@ -47,10 +45,10 @@ const startServer = async () => {
     });
 
     io.on("connection", (socket) => {
-      console.log("🚀 A user connected to the socket server!");
+      console.log("A user connected to the socket server!");
 
       socket.on("disconnect", () => {
-        console.log("🚀 A user disconnected from the socket server!");
+        console.log("A user disconnected from the socket server!");
       });
 
       socket.on("join-room", (roomId) => {
@@ -90,6 +88,14 @@ const startServer = async () => {
         }
       });
       socket.on("player-move", ({ roomId, move }) => {
+        const isPlayerOneWin = (move1, move2) => {
+          return (
+            (move1 === "rock" && move2 === "scissors") ||
+            (move1 === "paper" && move2 === "rock") ||
+            (move1 === "scissors" && move2 === "paper")
+          );
+        };
+
         const room = rooms[roomId];
         if (!room || !room.roundInProgress) {
           console.error(
@@ -113,11 +119,7 @@ const startServer = async () => {
 
           if (move1 === move2) {
             roundResult = "draw";
-          } else if (
-            (move1 === "rock" && move2 === "scissors") ||
-            (move1 === "paper" && move2 === "rock") ||
-            (move1 === "scissors" && move2 === "paper")
-          ) {
+          } else if (isPlayerOneWin(move1, move2)) {
             roundResult = player1;
             room.scores[player1]++;
             winner = player1;
@@ -181,11 +183,11 @@ const startServer = async () => {
       });
     });
 
-    httpServer.listen(PORT, () => {
-      console.log(`🚀 Server is running on http://localhost:${PORT}/api/v1`);
+    httpServer.listen(env.PORT, () => {
+      console.log(`Server is running on http://localhost:${env.PORT}/api/v1`);
     });
   } catch (error) {
-    console.error("❌ Failed to start the server:", error.message);
+    console.error("Failed to start the server:", error.message);
   }
 };
 
